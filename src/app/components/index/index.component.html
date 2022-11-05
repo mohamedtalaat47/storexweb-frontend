@@ -1,0 +1,58 @@
+<div *ngIf="(movies && getCategories); else loadingBlock">
+    <div class="row">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="container">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#subNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="subNav">
+                    <ul class="navbar-nav m-auto">
+                        <li> 
+                            <a class="nav-link" aria-current="page" (click)="getMovies()">All</a>
+                        </li>
+                        <li class="nav-item" *ngFor="let category of categories">
+                            <a class="nav-link" aria-current="page"
+                                (click)="getFiltered(category.id)">{{category.name}}</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </div>
+
+    <main class="mt-4 mb-5" *ngIf="movies.length > 0; else noMovies">
+        <div class="container">
+            <div class="row">
+                <div *ngFor="let movie of movies" class="col-lg-4 col-md-6  col-sm-12 mb-4">
+                    <div class="card border-0 shadow rounded-xs">
+                        <img src="https://test-api.storexweb.com/{{movie.image}}" class="card-img-top"
+                            style="max-height: 16rem;">
+                        <div class="card-text m-2">
+                            <h5 class=""> {{movie.name}} </h5>
+                            <p class="text-secondary">{{getCatName(movie.category_id)}}</p>
+                            <small> Published at {{movie.updated_at | date}} </small>
+                            <p>description: {{ (movie.description.length>30)? (movie.description |
+                                slice:0:30)+'...':(movie.description)}} </p>
+                            <div class="d-flex justify-content-center">
+                                <a [routerLink]="['edit', movie.id]"><button
+                                        class="btn btn-primary m-1">edit</button></a>
+                                <button class="btn btn-danger m-1" (click)="deleteMovie(movie.id)">delete</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+<ng-template #noMovies>
+    <div class="text-center my-5" style="height: 100vh;">
+        <h2>No Movies here ;(</h2>
+    </div>
+</ng-template>
+<ng-template #loadingBlock>
+    <div class="text-center my-5" style="height: 100vh;">
+        <h2>Loading</h2>
+    </div>
+</ng-template>

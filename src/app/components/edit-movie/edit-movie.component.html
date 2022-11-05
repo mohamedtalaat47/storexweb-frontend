@@ -1,0 +1,47 @@
+<div class="container my-5">
+    <div class="row">
+        <div class="col-md-12" *ngIf="movie; else loading">
+            <h2 class="mt-5">Edit movie</h2>
+            <p>Please fill the following fields.</p>
+            <form [formGroup]="formGroup" (ngSubmit)="updateMovie()">
+                <div class="form-group">
+                    <label>Name</label>
+                    <input type="text" name="name" class="form-control" formControlName="name" >
+                </div>
+                <div *ngIf="f.name.touched && f.name.invalid" class="text-danger">
+                    <div *ngIf="f.name.errors.required">Name is required.</div>
+                    <div *ngIf="f.name.errors.minlength">Name should be 3 character.</div>
+                </div>
+                <div class="form-group">
+                    <label>Category</label>
+                    <select class="form-control" name="category" formControlName="category_id" >
+                        <option *ngFor="let category of categories" value="{{category.id}}">{{category.name}}</option>
+                    </select>
+                </div>
+                <div *ngIf="f.category_id.touched && f.category_id.invalid" class="text-danger">
+                    <div *ngIf="f.category_id.errors.required">category is required.</div>
+                </div>
+                <div class="form-group">
+                    <label>Thumbnail</label>
+                    <input type="file" class="form-control" required (change)="onFileChange($event)" >
+                </div>
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea name="" id="" cols="30" rows="10" class="form-control" formControlName="description" ></textarea>
+                </div>
+                <div *ngIf="f.description.touched && f.description.invalid" class="text-danger">
+                    <div *ngIf="f.description.errors.required">description is required.</div>
+                    <div *ngIf="f.description.errors.minlength">description should be 3 character.</div>
+                </div>
+                <small *ngIf="err" class="text-danger">*{{err}}</small>
+                <input type="submit" class="btn btn-outline-primary mt-3 me-1" value="update">
+                <a routerLink="/" class="btn btn-outline-secondary mt-3">Cancel</a>
+            </form>
+        </div>
+        <ng-template #loading>
+            <div class="text-center my-5" style="height: 100vh;">
+                <h2>Loading</h2>
+            </div>
+        </ng-template>
+    </div>
+</div>
